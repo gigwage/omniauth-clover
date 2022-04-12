@@ -6,11 +6,11 @@ require 'omniauth/clover/version'
 Gem::Specification.new do |spec|
   spec.name          = "omniauth-clover"
   spec.version       = OmniAuth::Clover::VERSION
-  spec.authors       = ["David Yun"]
-  spec.email         = ["davidy@gmail.com"]
+  spec.authors       = ["David Yun", "Rocco Stanzione"]
+  spec.email         = ["grasshopper@linuxkungfu.org"]
   spec.description   = %q{Clover OAuth2 Strategy for Omniauth}
   spec.summary       = %q{Clover OAuth2 Strategy for Omniauth}
-  spec.homepage      = "https://github.com/davidy/omniauth-clover.git"
+  spec.homepage      = "https://github.com/gigwage/omniauth-clover.git"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
@@ -18,9 +18,9 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency 'omniauth-oauth2', '~> 1.1'
+  spec.add_dependency 'omniauth-oauth2', '~> 1.2'
 
-  spec.add_development_dependency "bundler", "~> 1.3"
+  spec.add_development_dependency "bundler", "~> 2.2"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"
 end
