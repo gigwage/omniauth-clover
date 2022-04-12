@@ -17,6 +17,14 @@ module OmniAuth
 
       option :authorize_options, [:redirect_uri, :response_type, :state]
 
+      # This method being overridden:
+      # https://github.com/omniauth/omniauth-oauth/blob/b6cfec0af190d52b69f769c21b9c971ec922e794/lib/omniauth/strategies/oauth.rb#L44-L66
+      # to prevent `get_access_token` from being called
+      #
+      def callback_phase # rubocop:disable MethodLength
+        env['omniauth.auth'] = auth_hash
+        call_app!
+      end
 
       # After successful authentication, client information is returned
       #
@@ -80,11 +88,28 @@ module OmniAuth
       end
 
       def raw_info
-        merchant_id   = request.params['merchant_id']
-        empployee_id  = request.params['employee_id']
-        @raw_info ||= access_token.get("/v3/merchants/#{merchant_id}/employees/#{empployee_id}").parsed
+        return @raw_info if @raw_info
+        url = "/oauth/token?client_id=#{options[:client_id]}&client_secret=#{options[:client_secret]}&code=#{request.params['code']}"
+        @raw_info ||= access_token.get(url).parsed
       end
 
+      # Temporary for debugging, raise the exception
+      # XXX: remove this method before shipping
+      #
+      def fail!(message_key, exception = nil)
+        env['omniauth.error'] = exception
+        env['omniauth.error.type'] = message_key.to_sym
+        env['omniauth.error.strategy'] = self
+
+        if exception
+          log :error, "Authentication failure! #{message_key}: #{exception.class}, #{exception.message}"
+          raise exception
+        else
+          log :error, "Authentication failure! #{message_key} encountered."
+        end
+
+        OmniAuth.config.on_failure.call(env)
+      end
 
       private
 
