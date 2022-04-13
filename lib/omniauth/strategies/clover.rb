@@ -17,15 +17,6 @@ module OmniAuth
 
       option :authorize_options, [:redirect_uri, :response_type, :state]
 
-      # This method being overridden:
-      # https://github.com/omniauth/omniauth-oauth/blob/b6cfec0af190d52b69f769c21b9c971ec922e794/lib/omniauth/strategies/oauth.rb#L44-L66
-      # to prevent `get_access_token` from being called
-      #
-      def callback_phase # rubocop:disable MethodLength
-        env['omniauth.auth'] = auth_hash
-        call_app!
-      end
-
       # After successful authentication, client information is returned
       #
       # Response parameters
