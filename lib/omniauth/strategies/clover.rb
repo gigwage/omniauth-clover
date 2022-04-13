@@ -12,7 +12,8 @@ module OmniAuth
       option :client_options, {
         :site           => 'https://www.clover.com',
         :authorize_url  => '/oauth/authorize',
-        :token_url      => '/oauth/token'
+        :token_url      => '/oauth/token',
+        :token_method   => :get
       }
 
       option :authorize_options, [:redirect_uri, :response_type, :state]
