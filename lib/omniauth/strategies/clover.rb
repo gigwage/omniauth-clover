@@ -80,10 +80,7 @@ module OmniAuth
       end
 
       def raw_info
-        return @raw_info if @raw_info
-        url = "/oauth/token?client_id=#{options[:client_id]}&client_secret=#{options[:client_secret]}&code=#{request.params['code']}"
-        Rails.logger.warn "== REQUESTING TOKEN: #{url}" if defined?(Rails)
-        @raw_info ||= access_token.get(url).parsed
+        @raw_info ||= access_token
       end
 
       # Temporary for debugging, raise the exception
