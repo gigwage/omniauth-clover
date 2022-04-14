@@ -83,24 +83,6 @@ module OmniAuth
         @raw_info ||= access_token
       end
 
-      # Temporary for debugging, raise the exception
-      # XXX: remove this method before shipping
-      #
-      def fail!(message_key, exception = nil)
-        env['omniauth.error'] = exception
-        env['omniauth.error.type'] = message_key.to_sym
-        env['omniauth.error.strategy'] = self
-
-        if exception
-          log :error, "Authentication failure! #{message_key}: #{exception.class}, #{exception.message}"
-          raise exception
-        else
-          log :error, "Authentication failure! #{message_key} encountered."
-        end
-
-        OmniAuth.config.on_failure.call(env)
-      end
-
       private
 
       def first_name
